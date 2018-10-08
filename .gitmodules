@@ -1,0 +1,3 @@
+[submodule "montagu_metrics"]
+	path = montagu_metrics
+	url = https://github.com/vimc/montagu-metrics-py.git
