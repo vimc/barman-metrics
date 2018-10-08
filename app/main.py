@@ -6,7 +6,7 @@ from subprocess import PIPE, run
 from dateutil import parser
 from flask import Flask
 
-from montagu_metrics.metrics import label_metrics, render_metrics
+from .montagu_metrics.metrics import label_metrics, render_metrics
 
 app = Flask(__name__)
 

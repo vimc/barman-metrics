@@ -1,13 +1,14 @@
 FROM python:3
 
-WORKDIR /app
+WORKDIR /tests
 
-COPY ./requirements-dev.txt /app/
-COPY ./requirements.txt /app/
+COPY ./requirements-dev.txt .
+COPY ./requirements.txt .
 RUN pip3 install -r requirements.txt
 RUN pip3 install -r requirements-dev.txt
 
-COPY ./bin /app/bin
-COPY ./tests /app/tests
+COPY ./app /app
+COPY ./app/montagu_metrics /montagu_metrics
+COPY ./tests /tests
 
 ENTRYPOINT ["pytest", "--teamcity"]
