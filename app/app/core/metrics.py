@@ -21,11 +21,11 @@ def output_as_dict(text):
 
 def parse_status(status):
     status_values = output_as_dict(status)
-
     metrics_created_at = float(status_values["metrics_created_at"])
     since_last_backup = seconds_elapsed_since(metrics_created_at)
 
     if since_last_backup > load_settings().max_age_seconds:
         return {"responding": False}
     else:
+        status_values.update({"responding": True})
         return status_values

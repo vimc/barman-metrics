@@ -22,6 +22,7 @@ def test_endpoint_labels_metrics(monkeypatch):
     response_text = response.get_data(as_text=True)
     assert response_text == """metrics_created_at{{target_name=\"fake-target\"}} {}
 some_metrics{{target_name=\"fake-target\"}} 32178
+responding{{target_name=\"fake-target\"}} 1
 """.format(timestamp)
 
 
@@ -49,6 +50,7 @@ def test_returns_fresh_data():
     result = parse_status(fresh_data)
     assert result == {
         "metrics_created_at": "{}".format(timestamp),
-        "some_metrics": "{}".format(32178)
+        "some_metrics": "{}".format(32178),
+        "responding": True
     }
 
