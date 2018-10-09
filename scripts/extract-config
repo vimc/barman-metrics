@@ -9,10 +9,12 @@ def run():
         d = json.load(json_data)
         port = d["port"]
         tag = d["tag"]
+        cache = d["cache_location"]
         with open("config.sh", "w+") as f:
             f.write("port={}\n".format(port))
             f.write("tag={}\n".format(tag))
             f.write("name={}_1\n".format(tag))
+            f.write("cache={}_1\n".format(cache))
 
 
 if __name__ == "__main__":
