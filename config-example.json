@@ -4,5 +4,6 @@
   },
   "cache_location": "/some/abs/path",
   "port": 5000,
-  "tag": "my_fake_metrics"
+  "tag": "my_fake_metrics",
+  "max_age_seconds": 600
 }

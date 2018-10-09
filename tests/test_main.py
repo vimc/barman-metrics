@@ -1,6 +1,7 @@
 from datetime import datetime, timedelta
-from app.main import parse_status, metrics
-import app.main
+from app.app.main import parse_status, metrics
+import app
+
 
 def create_mock_data(timestamp):
     return """
@@ -14,7 +15,7 @@ def test_endpoint_labels_metrics(monkeypatch):
     def mockreturn():
         return create_mock_data(timestamp)
 
-    monkeypatch.setattr(app.main, 'get_status', mockreturn)
+    monkeypatch.setattr(app.app.main, 'get_status', mockreturn)
     response = metrics()
     assert response.status_code == 200
 
