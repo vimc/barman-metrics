@@ -9,7 +9,7 @@ def create_mock_data(timestamp):
 """.format(timestamp)
 
 
-def test_endpoint_handles_arbitrary_error():
+def test_endpoint_labels_metrics():
     response = metrics()
     assert response.status_code == 200
 
