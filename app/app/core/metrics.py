@@ -1,4 +1,4 @@
-from .settings import cache_path, load_settings
+from .settings import cache_path
 from montagu_metrics.metrics import seconds_elapsed_since
 
 
@@ -19,12 +19,12 @@ def output_as_dict(text):
     return raw_values
 
 
-def parse_status(status):
+def parse_status(status, max_age_seconds):
     status_values = output_as_dict(status)
     metrics_created_at = float(status_values["metrics_created_at"])
     since_last_backup = seconds_elapsed_since(metrics_created_at)
 
-    if since_last_backup > load_settings().max_age_seconds:
+    if since_last_backup > max_age_seconds:
         return {"responding": False}
     else:
         status_values.update({"responding": True})

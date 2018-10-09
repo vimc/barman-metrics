@@ -39,7 +39,7 @@ def test_sets_responding_false_on_stale_data():
 
     timestamp = (datetime.now() - timedelta(minutes=15)).timestamp()
     stale_data = create_mock_data(timestamp)
-    result = parse_status(stale_data)
+    result = parse_status(stale_data, 600)
     assert result == {"responding": False}
 
 
@@ -47,7 +47,7 @@ def test_returns_fresh_data():
 
     timestamp = datetime.utcnow().timestamp()
     fresh_data = create_mock_data(timestamp)
-    result = parse_status(fresh_data)
+    result = parse_status(fresh_data, 600)
     assert result == {
         "metrics_created_at": "{}".format(timestamp),
         "some_metrics": "{}".format(32178),

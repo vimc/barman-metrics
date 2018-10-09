@@ -7,14 +7,16 @@ from montagu_metrics.metrics import label_metrics, render_metrics
 
 app = Flask(__name__)
 
+settings = load_settings()
+
 
 @app.route('/metrics')
 def metrics():
     try:
         status = get_status()
-        ms = parse_status(status)
+        ms = parse_status(status, settings.max_age_seconds)
     except:
         ms = {"responding": False}
-    labels = load_settings().labels
+    labels = settings.labels
     ms = label_metrics(ms, labels)
     return render_metrics(ms)
