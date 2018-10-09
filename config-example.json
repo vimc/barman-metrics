@@ -1,0 +1,7 @@
+{
+  "labels": {
+    "target_name": "fake-target"
+  },
+  "port": 5000,
+  "tag": "my_fake_metrics"
+}

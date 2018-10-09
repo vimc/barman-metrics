@@ -1,9 +1,20 @@
 #!/usr/bin/env bash
-set -ex
+set -e
 
-docker build --tag barman_metrics .
+if [ ! -f config.json ]; then
+    echo "Config file not found."
+    echo "Please create a config.json file in the same format as the config-example.json file in this repo."
+    exit -1;
+fi
+
+HERE=${BASH_SOURCE%/*}
+$HERE/extract-config
+
+source config.sh
+
+docker build --tag $tag .
 docker run --rm \
-    -p 5000:80 \
+    -p $port:80 \
     --detach \
-    --name=barman_metrics_1 \
-    barman_metrics
+    --name=$name \
+    $tag

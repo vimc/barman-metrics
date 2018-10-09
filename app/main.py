@@ -1,40 +1,31 @@
 #!/usr/bin/env python3
-import os
-from datetime import datetime
 from subprocess import PIPE, run
-
-from dateutil import parser
+import json
 from flask import Flask
 
-from montagu_metrics.metrics import label_metrics, render_metrics
+from montagu_metrics.metrics import label_metrics, render_metrics, parse_timestamp, seconds_elapsed_since
 
 app = Flask(__name__)
 
-
-def get_db_name():
-    return os.environ['BARMAN_DATABASE_NAME']
+config_path = "config.json"
 
 
-def seconds_elapsed_since(timestamp):
-    if timestamp:
-        now = datetime.now()
-        return (now - timestamp).total_seconds()
-    else:
-        return None
+def get_labels():
+    with open(config_path) as json_data:
+        d = json.load(json_data)
+        labels = d["labels"]
+    return labels
 
 
-def parse_timestamp(raw):
-    if raw and raw != "None":
-        return parser.parse(raw)
-    else:
-        return None
+def get_status():
+    return {"something": 2135423}
 
 
 def without_first_line(text):
     return text.split("\n")[1:]
 
 
-def barman_output_as_dict(text):
+def output_as_dict(text):
     lines = text.split("\n")[1:]
     raw_values = {}
     for line in lines:
@@ -45,41 +36,24 @@ def barman_output_as_dict(text):
     return raw_values
 
 
-def parse_status(status, check):
-    status_values = barman_output_as_dict(status)
-    check_values = barman_output_as_dict(check)
+def parse_status(status):
+    status_values = output_as_dict(status)
 
-    last_available = parse_timestamp(status_values["Last available backup"])
-    since_last_backup = seconds_elapsed_since(last_available)
-    check_all_ok = all(x.startswith("OK") for x in check_values.values())
+    metrics_created_at = parse_timestamp(status_values["metrics_created_at"])
+    since_last_backup = seconds_elapsed_since(metrics_created_at)
 
-    return {
-        "barman_running": True,
-        "barman_ok": status_values["Active"] == "True" and check_all_ok,
-        "barman_pg_version": status_values["PostgreSQL version"],
-        "barman_available_backups": status_values["No. of available backups"],
-        "barman_time_since_last_backup_seconds": since_last_backup,
-        "barman_time_since_last_backup_minutes":
-            since_last_backup / 60 if since_last_backup is not None else None,
-        "barman_time_since_last_backup_hours":
-            since_last_backup / 3600 if since_last_backup is not None else None,
-        "barman_time_since_last_backup_days":
-            since_last_backup / (3600 * 24) if since_last_backup is not None else None
-    }
+    if since_last_backup > 60 * 10:
+        return {"responding": False}
+    else:
+        return status_values
 
 
 @app.route('/metrics')
 def metrics():
     try:
-        db_name = get_db_name()
-        status = run(["barman", "status", db_name],
-                     stdout=PIPE, universal_newlines=True)
-        check = run(["barman", "check", db_name],
-                     stdout=PIPE, universal_newlines=True)
-        ms = parse_status(status.stdout, check.stdout)
-        ms = label_metrics(ms, {"database": db_name})
-        return render_metrics(ms)
+        ms = get_status()
     except:
-        return render_metrics({
-            "barman_responding": False
-        })
+        ms = {"responding": False}
+    labels = get_labels()
+    ms = label_metrics(ms, labels)
+    return render_metrics(ms)
