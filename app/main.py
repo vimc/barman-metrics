@@ -7,7 +7,7 @@ from montagu_metrics.metrics import label_metrics, render_metrics, parse_timesta
 
 app = Flask(__name__)
 
-config_path = "/etc/config.json"
+config_path = "/etc/cm/config.json"
 
 
 def get_labels():
