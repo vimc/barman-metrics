@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
-docker build -f ./tests/Dockerfile --tag barman_metrics_tests .
+docker build -f ./tests/Dockerfile --tag cache_metrics_tests .
 docker run --rm \
-    barman_metrics_tests
+    -v $PWD/config-example.json:/etc/config.json \
+    cache_metrics_tests

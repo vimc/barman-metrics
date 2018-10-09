@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import json
+from datetime import datetime
 from flask import Flask
 
 from montagu_metrics.metrics import label_metrics, render_metrics, parse_timestamp, seconds_elapsed_since
@@ -34,7 +35,7 @@ def output_as_dict(text):
 def parse_status(status):
     status_values = output_as_dict(status)
 
-    metrics_created_at = parse_timestamp(status_values["metrics_created_at"])
+    metrics_created_at = datetime.fromtimestamp(float(status_values["metrics_created_at"]))
     since_last_backup = seconds_elapsed_since(metrics_created_at)
 
     if since_last_backup > 60 * 10:

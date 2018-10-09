@@ -13,14 +13,7 @@ sudo -H pip3 install -r ./montagu_metrics/requirements.txt
 ```
 
 ## Tests
-To run tests
-
-```
-sudo -H pip3 install -r requirements-dev.txt
-pytest
-```
-
-or to run in a docker container
+To run tests:
 ```
 ./scripts/teamcity.sh
 ```

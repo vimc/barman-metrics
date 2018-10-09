@@ -1,10 +1,10 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 from app.main import parse_status, metrics
 
 
 def create_mock_data(timestamp):
     return """
-    metrics_created_at: 20180921T133331
+    metrics_created_at: {}
     some_metrics: 32178
 """.format(timestamp)
 
@@ -19,19 +19,19 @@ def test_endpoint_handles_arbitrary_error():
 
 def test_sets_responding_false_on_stale_data():
 
-    stale_data = create_mock_data("20180921T133331")
+    timestamp = (datetime.now() - timedelta(minutes=15)).timestamp()
+    stale_data = create_mock_data(timestamp)
     result = parse_status(stale_data)
     assert result == {"responding": False}
 
 
 def test_returns_fresh_data():
 
-    # setup
     timestamp = datetime.utcnow().timestamp()
     fresh_data = create_mock_data(timestamp)
     result = parse_status(fresh_data)
     assert result == {
-        "metrics_created_at": timestamp,
-        "some_metrics": 32178
+        "metrics_created_at": "{}".format(timestamp),
+        "some_metrics": "{}".format(32178)
     }
 
