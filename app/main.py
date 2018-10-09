@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-from subprocess import PIPE, run
 import json
 from flask import Flask
 
@@ -7,7 +6,7 @@ from montagu_metrics.metrics import label_metrics, render_metrics, parse_timesta
 
 app = Flask(__name__)
 
-config_path = "config.json"
+config_path = "/etc/config.json"
 
 
 def get_labels():
@@ -19,10 +18,6 @@ def get_labels():
 
 def get_status():
     return {"something": 2135423}
-
-
-def without_first_line(text):
-    return text.split("\n")[1:]
 
 
 def output_as_dict(text):

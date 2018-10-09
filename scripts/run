@@ -16,5 +16,6 @@ docker build --tag $tag .
 docker run --rm \
     -p $port:80 \
     --detach \
+    -v $PWD/config.json:/etc/config.json \
     --name=$name \
     $tag
