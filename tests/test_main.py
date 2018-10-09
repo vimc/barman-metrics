@@ -1,6 +1,6 @@
 from datetime import datetime, timedelta
 from app.main import parse_status, metrics
-
+import app.main
 
 def create_mock_data(timestamp):
     return """
@@ -9,12 +9,28 @@ def create_mock_data(timestamp):
 """.format(timestamp)
 
 
-def test_endpoint_labels_metrics():
+def test_endpoint_labels_metrics(monkeypatch):
+    timestamp = datetime.utcnow().timestamp()
+    def mockreturn():
+        return create_mock_data(timestamp)
+
+    monkeypatch.setattr(app.main, 'get_status', mockreturn)
     response = metrics()
     assert response.status_code == 200
 
     response_text = response.get_data(as_text=True)
-    assert response_text == "something{target_name=\"fake-target\"} 2135423\n"
+    assert response_text == """metrics_created_at{{target_name=\"fake-target\"}} {}
+some_metrics{{target_name=\"fake-target\"}} 32178
+""".format(timestamp)
+
+
+def test_endpoint_handles_stale_data():
+
+    response = metrics()
+    assert response.status_code == 200
+
+    response_text = response.get_data(as_text=True)
+    assert response_text == "responding{target_name=\"fake-target\"} 0\n"
 
 
 def test_sets_responding_false_on_stale_data():

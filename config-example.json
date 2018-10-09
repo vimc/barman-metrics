@@ -2,6 +2,7 @@
   "labels": {
     "target_name": "fake-target"
   },
+  "cache_location": "/some/abs/path",
   "port": 5000,
   "tag": "my_fake_metrics"
 }

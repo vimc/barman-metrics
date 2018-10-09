@@ -8,7 +8,7 @@ from montagu_metrics.metrics import label_metrics, render_metrics, parse_timesta
 app = Flask(__name__)
 
 config_path = "/etc/cm/config.json"
-
+cache_path = "/app/cache"
 
 def get_labels():
     with open(config_path) as json_data:
@@ -18,11 +18,13 @@ def get_labels():
 
 
 def get_status():
-    return {"something": 2135423}
+    with open(cache_path, "r") as f:
+        status = f.read()
+    return status
 
 
 def output_as_dict(text):
-    lines = text.split("\n")[1:]
+    lines = text.split("\n")
     raw_values = {}
     for line in lines:
         if line:
@@ -35,7 +37,7 @@ def output_as_dict(text):
 def parse_status(status):
     status_values = output_as_dict(status)
 
-    metrics_created_at = datetime.fromtimestamp(float(status_values["metrics_created_at"]))
+    metrics_created_at = float(status_values["metrics_created_at"])
     since_last_backup = seconds_elapsed_since(metrics_created_at)
 
     if since_last_backup > 60 * 10:
@@ -47,7 +49,8 @@ def parse_status(status):
 @app.route('/metrics')
 def metrics():
     try:
-        ms = get_status()
+        status = get_status()
+        ms = parse_status(status)
     except:
         ms = {"responding": False}
     labels = get_labels()
