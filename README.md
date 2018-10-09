@@ -19,5 +19,5 @@ To run tests inside a docker container, with `config-example.json` mounted as th
 ./scripts/teamcity.sh
 ```
 
-To run tests locally you need to copy `config-example.json` to `/etc/cm/config.json` where the app expects to
-find its config. 
+To run tests locally you would need to copy `config-example.json` to `/etc/cm/config.json` where the 
+app expects to find its config, and `cache-example` to `/app/cache` where the app expects the cache file.
