@@ -1,2 +1,7 @@
-metrics_created_at: 1539089746
-some_metrics: 32178
+{
+  "utc_seconds":  1539089746,
+  "utc_string": "ignored",
+  "data": {
+    "some_metrics": 32178
+  }
+}

@@ -1,13 +1,16 @@
 from datetime import datetime, timedelta
+import json
 from app.app.main import parse_status, metrics
 import app
 
 
 def create_mock_data(timestamp):
-    return """
-    metrics_created_at: {}
-    some_metrics: 32178
-""".format(timestamp)
+    return {
+        "utc_seconds": round(timestamp),
+        "data": {
+            "some_metrics": 32178
+        }
+    }
 
 
 def test_endpoint_labels_metrics(monkeypatch):
@@ -20,10 +23,9 @@ def test_endpoint_labels_metrics(monkeypatch):
     assert response.status_code == 200
 
     response_text = response.get_data(as_text=True)
-    assert response_text == """metrics_created_at{{target_name=\"fake-target\"}} {}
-some_metrics{{target_name=\"fake-target\"}} 32178
-responding{{target_name=\"fake-target\"}} 1
-""".format(timestamp)
+    assert response_text == """some_metrics{target_name=\"fake-target\"} 32178
+responding{target_name=\"fake-target\"} 1
+"""
 
 
 def test_endpoint_handles_stale_data():
@@ -49,8 +51,7 @@ def test_returns_fresh_data():
     fresh_data = create_mock_data(timestamp)
     result = parse_status(fresh_data, 600)
     assert result == {
-        "metrics_created_at": "{}".format(timestamp),
-        "some_metrics": "{}".format(32178),
+        "some_metrics": 32178,
         "responding": True
     }
 
