@@ -1,5 +1,4 @@
 from datetime import datetime, timedelta
-import json
 from app.app.main import parse_status, metrics
 import app
 
