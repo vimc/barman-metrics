@@ -9,7 +9,7 @@ To get a minimal example working locally:
 1. Clone with `--recursive`
 2. Create a file called `metrics.json` in the root of this directory by copying `cache-example`
 3. Create a file called `config.json` in the root of this directory by copying `config-example.json` 
-and changing the `cache_location` property to the absolute path of this directory
+and changing the `cache_volume` property to the absolute path of this directory
 4. Start the app by running:
     ```
     sudo -H pip3 install -r requirements.txt
