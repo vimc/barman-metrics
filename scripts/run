@@ -14,8 +14,6 @@ source config.sh
 
 echo "Reading from cache located at ${cache_volume}"
 
-REGISTRY=docker.montagu.dide.ic.ac.uk:5000
-NAME=cached-metrics
 
 docker run --rm \
     -p $port:80 \
@@ -23,4 +21,4 @@ docker run --rm \
     -v $cache_volume:/app/cache \
     -v $PWD/config.json:/etc/cm/config.json \
     --name=$name \
-    $REGISTRY/$NAME:latest
+    docker.montagu.dide.ic.ac.uk:5000/cached-metrics:latest
