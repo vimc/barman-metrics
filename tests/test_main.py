@@ -46,6 +46,21 @@ metrics_responding{db_name=\"montagu\"} 1
 """
 
 
+def test_endpoint_handles_error(monkeypatch):
+
+    def mockreturn(filename):
+        return None
+
+    monkeypatch.setattr(app.app.main, "get_status", mockreturn)
+
+    response = metrics()
+    assert response.status_code == 200
+
+    response_text = response.get_data(as_text=True)
+    assert response_text == "metrics_responding{db_name=\"montagu\"} 0\n"
+
+
+
 def test_sets_metrics_out_of_date_true_on_stale_data():
 
     timestamp = (datetime.now() - timedelta(minutes=15)).timestamp()
