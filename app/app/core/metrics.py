@@ -14,8 +14,8 @@ def parse_status(status, max_age_seconds):
     since_last_backup = seconds_elapsed_since(metrics_created_at)
 
     if since_last_backup > max_age_seconds:
-        return {"responding": False}
+        return {"cache_out_of_date": True}
     else:
         data = status["data"]
-        data.update({"responding": True})
+        data.update({"cache_out_of_date": False})
         return data

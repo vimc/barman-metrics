@@ -15,9 +15,10 @@ def metrics():
     try:
         status = get_status(settings.cache_file)
         ms = parse_status(status, settings.max_age_seconds)
+        ms.update({"metrics_responding": True})
     except Exception as e:
         print(e)
-        ms = {"responding": False}
+        ms = {"metrics_responding": False}
     labels = settings.labels
     ms = label_metrics(ms, labels)
     return Response(render_metrics(ms), mimetype="text/plain")

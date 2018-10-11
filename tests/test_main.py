@@ -25,7 +25,8 @@ def test_endpoint_labels_metrics(monkeypatch):
 
     response_text = response.get_data(as_text=True)
     assert response_text == """some_metrics{db_name=\"montagu\"} 32178
-responding{db_name=\"montagu\"} 1
+cache_out_of_date{db_name=\"montagu\"} 0
+metrics_responding{db_name=\"montagu\"} 1
 """
 
 
@@ -40,15 +41,17 @@ def test_endpoint_handles_stale_data(monkeypatch):
     assert response.status_code == 200
 
     response_text = response.get_data(as_text=True)
-    assert response_text == "responding{db_name=\"montagu\"} 0\n"
+    assert response_text == """cache_out_of_date{db_name=\"montagu\"} 1
+metrics_responding{db_name=\"montagu\"} 1
+"""
 
 
-def test_sets_responding_false_on_stale_data():
+def test_sets_metrics_out_of_date_true_on_stale_data():
 
     timestamp = (datetime.now() - timedelta(minutes=15)).timestamp()
     stale_data = create_mock_data(timestamp)
     result = parse_status(stale_data, 600)
-    assert result == {"responding": False}
+    assert result == {"cache_out_of_date": True}
 
 
 def test_returns_fresh_data():
@@ -58,6 +61,6 @@ def test_returns_fresh_data():
     result = parse_status(fresh_data, 600)
     assert result == {
         "some_metrics": 32178,
-        "responding": True
+        "cache_out_of_date": False
     }
 
