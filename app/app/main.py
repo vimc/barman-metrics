@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-from flask import Flask
+from flask import Flask, Response
 
 from .core.settings import load_settings
 from .core.metrics import get_status, parse_status
@@ -19,4 +19,4 @@ def metrics():
         ms = {"responding": False}
     labels = settings.labels
     ms = label_metrics(ms, labels)
-    return render_metrics(ms)
+    return Response(render_metrics(ms), mimetype="text/plain")
