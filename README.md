@@ -50,5 +50,16 @@ To run tests inside a docker container, with `config-example.json` mounted as th
 ./scripts/test.sh
 ```
 
-To run tests locally you would need to copy `config-example.json` to `/etc/cm/config.json` where the 
-app expects to find its config, and `cache-example` to `/app/cache` where the app expects the cache file.
+To run tests not inside docker you would need to copy `config-example.json` to `/etc/cm/config.json` where the 
+app expects to find its config, and `cache-example` to `/app/cache/metrics.json` where the app expects the cache file.
+
+## Teamcity
+
+On Teamcity the script `./scripts/teamcity.sh` is run, which runs tests and pushes the container to 
+the montagu registry. To build the container locally, run
+```
+docker build \
+       --tag $APP_DOCKER_COMMIT_TAG \
+       --tag $APP_DOCKER_BRANCH_TAG \
+       .
+```
