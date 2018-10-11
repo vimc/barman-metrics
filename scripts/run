@@ -16,6 +16,8 @@ echo "Reading from cache located at ${cache_volume}"
 
 GIT_ID=$(git rev-parse --short=7 HEAD)
 
+docker pull docker.montagu.dide.ic.ac.uk:5000/cached-metrics:$GIT_ID
+
 docker run --rm \
     -p $port:80 \
     --detach \
