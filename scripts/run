@@ -14,6 +14,7 @@ source config.sh
 
 echo "Reading from cache located at ${cache_volume}"
 
+GIT_ID=$(git rev-parse --short=7 HEAD)
 
 docker run --rm \
     -p $port:80 \
@@ -21,4 +22,4 @@ docker run --rm \
     -v $cache_volume:/app/cache \
     -v $PWD/config.json:/etc/cm/config.json \
     --name=$name \
-    docker.montagu.dide.ic.ac.uk:5000/cached-metrics:latest
+    docker.montagu.dide.ic.ac.uk:5000/cached-metrics:$GIT_ID
