@@ -1,8 +1,6 @@
 #!/usr/bin/env bash
-docker build -f ./tests/Dockerfile --tag cache_metrics_tests .
-docker run --rm \
-    -v $PWD/config-example.json:/etc/cm/config.json \
-    cache_metrics_tests
+HERE=${BASH_SOURCE%/*}
+$HERE/test.sh
 
 GIT_ID=$(git rev-parse --short=7 HEAD)
 GIT_BRANCH=$(git symbolic-ref --short HEAD)

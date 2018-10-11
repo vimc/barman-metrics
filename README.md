@@ -16,7 +16,7 @@ sudo -H pip3 install -r ./montagu_metrics/requirements.txt
 
 To run tests inside a docker container, with `config-example.json` mounted as the config file:
 ```
-./scripts/teamcity.sh
+./scripts/test.sh
 ```
 
 To run tests locally you would need to copy `config-example.json` to `/etc/cm/config.json` where the 

@@ -24,8 +24,8 @@ def test_endpoint_labels_metrics(monkeypatch):
     assert response.status_code == 200
 
     response_text = response.get_data(as_text=True)
-    assert response_text == """some_metrics{target_name=\"fake-target\"} 32178
-responding{target_name=\"fake-target\"} 1
+    assert response_text == """some_metrics{db_name=\"montagu\"} 32178
+responding{db_name=\"montagu\"} 1
 """
 
 
@@ -40,7 +40,7 @@ def test_endpoint_handles_stale_data(monkeypatch):
     assert response.status_code == 200
 
     response_text = response.get_data(as_text=True)
-    assert response_text == "responding{target_name=\"fake-target\"} 0\n"
+    assert response_text == "responding{db_name=\"montagu\"} 0\n"
 
 
 def test_sets_responding_false_on_stale_data():
