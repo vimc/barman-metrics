@@ -9,12 +9,12 @@ def run():
         d = json.load(json_data)
         port = d["port"]
         tag = d["tag"]
-        cache = d["cache_location"]
+        cache_volume = d["cache_volume"]
         with open("config.sh", "w+") as f:
             f.write("port={}\n".format(port))
             f.write("tag={}\n".format(tag))
             f.write("name={}_1\n".format(tag))
-            f.write("cache={}_1\n".format(cache))
+            f.write("cache_volume={}".format(cache_volume))
 
 
 if __name__ == "__main__":

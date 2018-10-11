@@ -2,7 +2,8 @@
   "labels": {
     "target_name": "fake-target"
   },
-  "cache_location": "/some/abs/path",
+  "cache_volume": "/some/abs/path",
+  "cache_filename": "mycache.json",
   "port": 5000,
   "tag": "my_fake_metrics",
   "max_age_seconds": 600

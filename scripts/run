@@ -12,11 +12,13 @@ $HERE/extract-config
 
 source config.sh
 
+echo "Reading from cache located at ${cache_volume}"
+
 docker build --tag $tag .
 docker run --rm \
     -p $port:80 \
     --detach \
-    -v $cache:/app/cache \
+    -v $cache_volume:/app/cache \
     -v $PWD/config.json:/etc/cm/config.json \
     --name=$name \
     $tag

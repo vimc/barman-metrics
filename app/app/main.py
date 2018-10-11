@@ -13,7 +13,7 @@ settings = load_settings()
 @app.route('/metrics')
 def metrics():
     try:
-        status = get_status()
+        status = get_status(settings.cache_file)
         ms = parse_status(status, settings.max_age_seconds)
     except:
         ms = {"responding": False}

@@ -1,4 +1,5 @@
 import json
+import os
 
 config_path = "/etc/cm/config.json"
 cache_path = "/app/cache"
@@ -10,6 +11,7 @@ class Settings:
             config = json.load(f)
 
         self.labels = config["labels"]
+        self.cache_file = os.path.join(cache_path, config["cache_filename"])
         self.max_age_seconds = config["max_age_seconds"]
 
 

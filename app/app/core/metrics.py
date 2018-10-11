@@ -1,12 +1,14 @@
 import json
-from .settings import cache_path
 from montagu_metrics.metrics import seconds_elapsed_since
 
 
-def get_status():
-    with open(cache_path, "r") as f:
-        status = json.load(f)
-    return status
+def get_status(cache_file_location):
+    try:
+        with open(cache_file_location, "r") as f:
+            status = json.load(f)
+        return status
+    except:
+        return
 
 
 def parse_status(status, max_age_seconds):
