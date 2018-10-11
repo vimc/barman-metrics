@@ -1,10 +1,10 @@
 {
   "labels": {
-    "target_name": "fake-target"
+    "db_name": "montagu"
   },
-  "cache_volume": "/some/abs/path",
-  "cache_filename": "mycache.json",
+  "cache_volume": "barman_metrics",
+  "cache_filename": "metrics.json",
   "port": 5000,
-  "name": "my_fake_metrics",
+  "name": "barman-metrics",
   "max_age_seconds": 600
 }
