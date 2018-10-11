@@ -8,12 +8,11 @@ def run():
     with open(config_path) as json_data:
         d = json.load(json_data)
         port = d["port"]
-        tag = d["tag"]
+        name = d["name"]
         cache_volume = d["cache_volume"]
         with open("config.sh", "w+") as f:
             f.write("port={}\n".format(port))
-            f.write("tag={}\n".format(tag))
-            f.write("name={}_1\n".format(tag))
+            f.write("name={}\n".format(name))
             f.write("cache_volume={}".format(cache_volume))
 
 

@@ -5,6 +5,6 @@
   "cache_volume": "/some/abs/path",
   "cache_filename": "mycache.json",
   "port": 5000,
-  "tag": "my_fake_metrics",
+  "name": "my_fake_metrics",
   "max_age_seconds": 600
 }

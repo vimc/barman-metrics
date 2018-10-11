@@ -14,10 +14,12 @@ def create_mock_data(timestamp):
 
 def test_endpoint_labels_metrics(monkeypatch):
     timestamp = datetime.utcnow().timestamp()
-    def mockreturn():
+
+    def mockreturn(filename):
         return create_mock_data(timestamp)
 
-    monkeypatch.setattr(app.app.main, 'get_status', mockreturn)
+    monkeypatch.setattr(app.app.main, "get_status", mockreturn)
+
     response = metrics()
     assert response.status_code == 200
 
@@ -27,7 +29,12 @@ responding{target_name=\"fake-target\"} 1
 """
 
 
-def test_endpoint_handles_stale_data():
+def test_endpoint_handles_stale_data(monkeypatch):
+
+    def mockreturn(filename):
+        return create_mock_data(1539089746)
+
+    monkeypatch.setattr(app.app.main, "get_status", mockreturn)
 
     response = metrics()
     assert response.status_code == 200
