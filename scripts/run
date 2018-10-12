@@ -15,11 +15,16 @@ source config.sh
 
 echo "Reading from cache located at ${cache_volume}"
 
-cd $REPO
-GIT_ID=$(git rev-parse --short=7 HEAD)
+if [[ $1 == "--public" ]]; then
+    IMAGE=vimc/cached-metrics:master
+else
+    cd $REPO
+    GIT_ID=$(git rev-parse --short=7 HEAD)
+    IMAGE=docker.montagu.dide.ic.ac.uk:5000/cached-metrics:$GIT_ID
+fi
 
 set -x
-docker pull docker.montagu.dide.ic.ac.uk:5000/cached-metrics:$GIT_ID
+docker pull $IMAGE
 
 docker run --rm \
     -p $port:80 \
@@ -27,7 +32,7 @@ docker run --rm \
     -v $cache_volume:/app/cache \
     -v $PWD/config.json:/etc/cm/config.json \
     --name=$name \
-    docker.montagu.dide.ic.ac.uk:5000/cached-metrics:$GIT_ID
+    $IMAGE
 
 set +x
 echo "Metrics are now being served at http://localhost:$port/metrics"

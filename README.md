@@ -19,6 +19,12 @@ and changing the `cache_volume` property to the absolute path of this directory
 5. To see the metrics change, change the `utc_seconds` value in `metrics.json` to a a value less
 than 5 minutes ago (convert current time to seconds here https://www.epochconverter.com/)
 
+To run the current master from outside of DIDE, you can use:
+
+```
+./scripts/run --public
+```
+
 ## Config
 
 See `config-example.json` in this directory for an example config.
