@@ -18,6 +18,7 @@ echo "Reading from cache located at ${cache_volume}"
 cd $REPO
 GIT_ID=$(git rev-parse --short=7 HEAD)
 
+set -x
 docker pull docker.montagu.dide.ic.ac.uk:5000/cached-metrics:$GIT_ID
 
 docker run --rm \
@@ -28,4 +29,5 @@ docker run --rm \
     --name=$name \
     docker.montagu.dide.ic.ac.uk:5000/cached-metrics:$GIT_ID
 
+set +x
 echo "Metrics are now being served at http://localhost:$port/metrics"
