@@ -8,12 +8,14 @@ if [ ! -f config.json ]; then
 fi
 
 HERE=${BASH_SOURCE%/*}
+REPO=$(dirname $HERE)
 $HERE/extract-config
 
 source config.sh
 
 echo "Reading from cache located at ${cache_volume}"
 
+cd $REPO
 GIT_ID=$(git rev-parse --short=7 HEAD)
 
 docker pull docker.montagu.dide.ic.ac.uk:5000/cached-metrics:$GIT_ID
