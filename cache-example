@@ -1,0 +1,7 @@
+{
+  "utc_seconds":  1539089746,
+  "utc_string": "ignored",
+  "data": {
+    "some_metrics": 32178
+  }
+}

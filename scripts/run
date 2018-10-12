@@ -1,9 +1,29 @@
 #!/usr/bin/env bash
-set -ex
+set -e
 
-docker build --tag barman_metrics .
+if [ ! -f config.json ]; then
+    echo "Config file not found."
+    echo "Please create a config.json file in the same format as the config-example.json file in this repo."
+    exit -1;
+fi
+
+HERE=${BASH_SOURCE%/*}
+$HERE/extract-config
+
+source config.sh
+
+echo "Reading from cache located at ${cache_volume}"
+
+GIT_ID=$(git rev-parse --short=7 HEAD)
+
+docker pull docker.montagu.dide.ic.ac.uk:5000/cached-metrics:$GIT_ID
+
 docker run --rm \
-    -p 5000:80 \
+    -p $port:80 \
     --detach \
-    --name=barman_metrics_1 \
-    barman_metrics
+    -v $cache_volume:/app/cache \
+    -v $PWD/config.json:/etc/cm/config.json \
+    --name=$name \
+    docker.montagu.dide.ic.ac.uk:5000/cached-metrics:$GIT_ID
+
+echo "Metrics are now being served at http://localhost:$port/metrics"
