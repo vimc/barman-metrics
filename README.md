@@ -7,22 +7,20 @@ returning metadata from a local cache file in a format that Prometheus can use f
 To get a minimal example working locally:
 
 1. Clone with `--recursive`
-2. Create a file called `metrics.json` in the root of this directory by copying `cache-example`
-3. Create a file called `config.json` in the root of this directory by copying `config-example.json` 
-and changing the `cache_volume` property to the absolute path of this directory
-4. Start the app by running:
+2. `cp cache-example metrics.json`
+3. `cp config-example.json config.json`
+4. Edit the `cache_volume` property in config.json to the absolute path of this directory
+5. Start the app by running:
     ```
-    sudo -H pip3 install -r requirements.txt
-    sudo -H pip3 install -r ./montagu_metrics/requirements.txt
-    ./scripts/run
+    ./scripts/run config.json
     ```
-5. To see the metrics change, change the `utc_seconds` value in `metrics.json` to a a value less
+6. To see the metrics change, change the `utc_seconds` value in `metrics.json` to a a value less
 than 5 minutes ago (convert current time to seconds here https://www.epochconverter.com/)
 
 To run the current master from outside of DIDE, you can use:
 
 ```
-./scripts/run --public
+./scripts/run config.json --public
 ```
 
 ## Config

@@ -1,21 +1,30 @@
 #!/usr/bin/env bash
 set -e
 
-if [ ! -f config.json ]; then
-    echo "Config file not found."
-    echo "Please create a config.json file in the same format as the config-example.json file in this repo."
+if [[ "$#" -lt 1 || "$#" -gt 2 ]]; then
+    echo "Usage: ./run PATH_TO_CONFIG [--public]"
+    echo "Options:"
+    echo "  --public    Pull from public docker registry (master tag only)"
+    exit 1
+fi
+
+CONFIG_PATH=$1
+
+if [ ! -f $CONFIG_PATH ]; then
+    echo "Config file not found at $CONFIG_PATH"
+    echo "Please create a config file in the same format as the config-example.json file in this repo."
     exit -1;
 fi
 
 HERE=${BASH_SOURCE%/*}
 REPO=$(dirname $HERE)
-$HERE/extract-config
+$HERE/extract-config "$CONFIG_PATH"
 
 source config.sh
 
 echo "Reading from cache located at ${cache_volume}"
 
-if [[ $1 == "--public" ]]; then
+if [[ $2 == "--public" ]]; then
     IMAGE=vimc/cached-metrics:master
 else
     cd $REPO
