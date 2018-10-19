@@ -39,7 +39,7 @@ docker run --rm \
     -p $port:80 \
     --detach \
     -v $cache_volume:/app/cache \
-    -v $PWD/config.json:/etc/cm/config.json \
+    -v $CONFIG_PATH:/etc/cm/config.json:ro \
     --name=$name \
     $IMAGE
 
